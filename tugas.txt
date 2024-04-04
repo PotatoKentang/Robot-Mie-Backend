@@ -1,0 +1,4 @@
+2. mau handle error di save ke order kayak gimana?
+3. nunggu endpoint cooking dari ko dylan
+4. untuk frontend sendiri fix logic datanya, sehingga apa yang di fetch dalam food bukan yang muncul di cardnya
+
