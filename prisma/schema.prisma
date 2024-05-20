@@ -1,36 +1,49 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
-// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
-// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
-
 generator client {
   provider = "prisma-client-js"
 }
 
 datasource db {
-  provider = "sqlite"
-  url      = "file:../database/database.sqlite"
+  provider = "mysql"
+  url      = env("DATABASE_URL")
 }
 
 model Order {
-  id          Int      @id @default(autoincrement())
-  orderId     String
-  orderNumber Int
-  name        String
-  quantity    Int
-  price       Float
-  status      String   @default("pending")
-  createdAt   DateTime @default(now())
+  id             String   @id @default(uuid())
+  orderId        String
+  orderVariantId String
+  orderNumber    Int
+  name           String
+  quantity       Int
+  price          Float
+  lift           Int     @default(-1)
+  status         String   @default("waiting")
+  createdAt      DateTime @default(now())
 }
 
 model Product {
-  id               Int      @id @default(autoincrement())
+  id               String   @id @default(uuid())
   name             String
   price            Float
   image            String
   address          String
   callback_address String
   count            Int
+  sauce            Sauce    @relation(fields: [sauceId], references: [id])
   createdAt        DateTime @default(now())
+  sauceId          String
+}
+
+model OrderDaily {
+  id    String @id @default(uuid())
+  date  String @unique
+  count Int    @default(1)
+}
+
+model Sauce {
+  id   String @id @default(uuid())
+  name String
+  date     String
+  quantity Int
+  createdAt DateTime @default(now())
+  Product  Product[]
 }
